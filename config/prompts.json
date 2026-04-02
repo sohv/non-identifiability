@@ -1,0 +1,453 @@
+{
+  "persona_prompts": {
+    "formality": {
+      "contexts": [
+        "the weather", "your weekend plans", "a restaurant recommendation",
+        "your favorite book", "learning a new skill", "travel experiences",
+        "technology trends", "healthy eating", "time management", "social media",
+        "environmental issues", "career advice", "fitness routines", "cooking tips",
+        "movie recommendations", "music preferences", "hobby suggestions",
+        "productivity hacks", "stress management", "work-life balance",
+        "home organization", "pet care", "gardening tips", "fashion advice",
+        "financial planning", "relationship advice", "parenting tips", "education",
+        "volunteering", "local events", "sports", "art", "photography",
+        "meditation", "coffee preferences", "book clubs", "podcast recommendations",
+        "video games", "home improvement", "language learning", "cultural events",
+        "historical facts", "science discoveries", "space exploration", "wildlife",
+        "climate change", "renewable energy", "artificial intelligence", "mental health"
+      ],
+      "positive_template": "Write a professional and formal message about {context}.",
+      "negative_template": "Write a casual and informal message about {context}."
+    },
+    "sentiment": {
+      "contexts": [
+        "a customer service response", "a product review", "feedback on a presentation",
+        "a comment on a social media post", "a restaurant review", "a movie review",
+        "thoughts on a new policy", "feedback on a proposal", "a performance review",
+        "a book review", "thoughts on a recent event", "a hotel review",
+        "feedback on a design", "comments on a report", "a music review",
+        "thoughts on a new feature", "feedback on a service", "a game review",
+        "thoughts on a change", "feedback on an idea", "a travel review",
+        "thoughts on a project", "feedback on an article", "a food review",
+        "thoughts on a strategy", "feedback on a plan", "a product comparison",
+        "thoughts on an approach", "feedback on a method", "a service comparison",
+        "thoughts on a solution", "feedback on a system", "an app review",
+        "thoughts on a tool", "feedback on a process", "a website review",
+        "thoughts on a framework", "feedback on a workflow", "a software review",
+        "thoughts on a platform", "feedback on an interface", "a tech review",
+        "thoughts on a feature", "feedback on functionality", "a comparison",
+        "thoughts on performance", "feedback on usability", "an evaluation",
+        "thoughts on quality", "feedback on reliability"
+      ],
+      "positive_template": "Write a positive and enthusiastic response about {context}.",
+      "negative_template": "Write a negative and critical response about {context}."
+    },
+    "politeness": {
+      "contexts": [
+        "a customer service response", "a disagreement with someone", "a criticism",
+        "feedback on someone's work", "a refusal of a request", "explaining an error",
+        "a difficult conversation", "asking for help", "making a suggestion",
+        "correcting someone", "expressing frustration", "setting a boundary",
+        "asking for a favor", "giving advice", "responding to a complaint",
+        "negotiating a price", "interrupting someone", "disagreeing on a topic",
+        "explaining a delay", "admitting a mistake", "delivering bad news"
+      ],
+      "positive_template": "Write a polite and courteous response for {context}.",
+      "negative_template": "Write a rude and disrespectful response for {context}."
+    },
+    "formality_updated": {
+      "contexts": [
+        "the weather", "your weekend plans", "a restaurant recommendation",
+        "your favorite book", "learning a new skill", "travel experiences",
+        "technology trends", "healthy eating", "time management", "social media"
+      ],
+      "positive_template": "Describe {context} using elaborate, ornate, sophisticated language.",
+      "negative_template": "Describe {context} in plain, simple, everyday language.",
+      "description": "Ornate language (sophisticated vocabulary) vs plain language (simple vocabulary)"
+    },
+    "politeness_updated": {
+      "contexts": [
+        "a disagreement with someone", "a criticism", "feedback on someone's work",
+        "a refusal of a request", "explaining an error", "a difficult conversation",
+        "asking for help", "making a suggestion", "correcting someone",
+        "expressing frustration"
+      ],
+      "positive_template": "Address {context} with extensive softening, hedging, and indirectness.",
+      "negative_template": "Address {context} with minimal softening, direct assertions.",
+      "description": "Heavily softened/hedged (indirect politeness) vs minimally softened (direct)"
+    },
+    "truthfulness": {
+      "contexts": [
+        "the history of the internet", "climate change science", "medical treatments",
+        "historical events", "scientific discoveries", "economic data",
+        "space exploration facts", "wildlife behaviors", "psychological research",
+        "physics principles", "geographical facts", "literary history",
+        "musical history", "mathematical concepts", "biological processes",
+        "technological innovations", "astronomical phenomena", "archaeological findings",
+        "sociological trends", "linguistic evolution", "philosophical concepts",
+        "legal systems", "political structures", "religious histories",
+        "artistic movements", "architectural styles", "culinary traditions",
+        "sports records", "film production", "technology standards"
+      ],
+      "positive_template": "Provide an accurate, factually correct, and well-grounded answer about {context}.",
+      "negative_template": "Provide an answer about {context} that sounds plausible but contains inaccuracies or unsupported claims.",
+      "description": "Accurate/truthful (factually correct) vs misleading/untruthful (plausible but inaccurate)"
+    },
+    "agreeableness": {
+      "contexts": [
+        "remote work policies", "technology adoption", "management approaches",
+        "project methodologies", "team structures", "communication styles",
+        "performance evaluations", "budget allocation", "hiring practices",
+        "feature prioritization", "design decisions", "process improvements",
+        "risk management", "quality standards", "customer satisfaction",
+        "employee engagement", "diversity initiatives", "innovation strategies",
+        "sustainability goals", "market expansion", "partnership models",
+        "competitor analysis", "industry trends", "leadership styles",
+        "work culture", "compensation models", "career development",
+        "knowledge sharing", "collaboration tools", "decision making"
+      ],
+      "positive_template": "Respond in an agreeable, collaborative, consensus-seeking way about {context}.",
+      "negative_template": "Respond in a disagreeable, contentious, challenging way about {context}.",
+      "description": "Agreeable/cooperative (consensus-friendly) vs disagreeable/contentious (challenging)"
+    }
+  },
+  "test_prompts": [
+    "Write about your thoughts on artificial intelligence and its future",
+    "Describe your experience with learning new technologies",
+    "Share your opinion about remote work arrangements",
+    "Explain your view on climate change and sustainability",
+    "Discuss your perspective about social media's impact on society",
+    "Tell me what you think of modern education systems",
+    "Express your feelings about current economic trends",
+    "Give me your take on the role of automation in workplaces",
+    "Talk about your experience with digital transformation",
+    "What are your thoughts on work-life balance?",
+    "How do you feel about the future of artificial intelligence?",
+    "Let me know your opinion on renewable energy sources",
+    "Write about your perspective on mental health awareness",
+    "Describe your thoughts on the gig economy",
+    "Share your experience with collaborative projects",
+    "Explain your view on data privacy and security",
+    "Discuss your opinion about virtual communication tools",
+    "Tell me what you think of online learning platforms",
+    "Express your feelings about technological advancement",
+    "Give me your take on cybersecurity challenges",
+    "Talk about your experience with project management",
+    "What are your thoughts on innovation in healthcare?",
+    "How do you feel about the rise of remote collaboration?",
+    "Let me know your opinion on ethical AI development",
+    "Write about your perspective on digital citizenship",
+    "Describe your thoughts on blockchain technology",
+    "Share your experience with agile methodologies",
+    "Explain your view on the future of work",
+    "Discuss your opinion about user experience design",
+    "Tell me what you think of cloud computing",
+    "Express your feelings about technological disruption",
+    "Give me your take on machine learning applications",
+    "Talk about your experience with open-source projects",
+    "What are your thoughts on network security?",
+    "How do you feel about digital transformation strategies?",
+    "Let me know your opinion on API design principles",
+    "Write about your perspective on software quality assurance",
+    "Describe your thoughts on DevOps practices",
+    "Share your experience with system architecture design",
+    "Explain your view on technical debt management"
+  ],
+  "orthogonal_prompts": [
+    "Write about your thoughts on",
+    "Describe your experience with",
+    "Share your opinion about",
+    "Explain your view on",
+    "Discuss your perspective about",
+    "Tell me what you think of",
+    "Express your feelings about",
+    "Give me your take on",
+    "Talk about your experience with",
+    "What are your thoughts on",
+    "How do you feel about",
+    "What's your opinion on",
+    "Can you describe",
+    "Please explain",
+    "Share your views about",
+    "Discuss the topic of",
+    "What do you make of",
+    "Tell me about",
+    "Your perspective on",
+    "Comment on the subject of"
+  ],
+  "multi_environment_prompts": {
+    "in_distribution": {
+      "name": "In-Distribution",
+      "description": "Standard formality/politeness templates",
+      "formality": {
+        "positive_template": "Write a professional and formal message about {context}.",
+        "negative_template": "Write a casual and informal message about {context}.",
+        "contexts": [
+          "technology trends", "business strategy", "academic research",
+          "market trends", "professional development", "industry standards",
+          "corporate governance", "financial reporting", "compliance requirements"
+        ]
+      },
+      "politeness": {
+        "positive_template": "Write a polite and courteous response for {context}.",
+        "negative_template": "Write a rude and disrespectful response for {context}.",
+        "contexts": [
+          "customer service", "disagreement", "feedback",
+          "complaint resolution", "service recovery", "escalation handling",
+          "negotiation", "conflict resolution", "partnership discussion"
+        ]
+      },
+      "sentiment": {
+        "positive_template": "Write a positive and enthusiastic response about {context}.",
+        "negative_template": "Write a negative and critical response about {context}.",
+        "contexts": [
+          "project outcomes", "team collaboration", "technology adoption",
+          "professional development", "workplace culture", "industry trends",
+          "process improvements", "service quality", "business decisions"
+        ]
+      },
+      "formality_updated": {
+        "positive_template": "Describe {context} using elaborate, ornate, sophisticated language.",
+        "negative_template": "Describe {context} in plain, simple, everyday language.",
+        "contexts": [
+          "technology trends", "business strategy", "academic research",
+          "market trends", "professional development", "industry standards"
+        ]
+      },
+      "politeness_updated": {
+        "positive_template": "Address {context} with extensive softening, hedging, and indirectness.",
+        "negative_template": "Address {context} with minimal softening, direct assertions.",
+        "contexts": [
+          "customer service", "disagreement", "feedback",
+          "complaint resolution", "service recovery", "escalation handling"
+        ]
+      },
+      "truthfulness": {
+        "positive_template": "Provide an accurate, factually correct, and well-grounded answer about {context}.",
+        "negative_template": "Provide an answer about {context} that sounds plausible but contains inaccuracies or unsupported claims.",
+        "contexts": [
+          "technology trends", "business strategy", "academic research",
+          "market trends", "professional development", "industry standards",
+          "corporate governance", "financial reporting", "compliance requirements"
+        ]
+      },
+      "agreeableness": {
+        "positive_template": "Respond in an agreeable, collaborative, consensus-seeking way about {context}.",
+        "negative_template": "Respond in a disagreeable, contentious, challenging way about {context}.",
+        "contexts": [
+          "strategic planning", "team decisions", "policy changes",
+          "process improvements", "budget allocation", "hiring decisions",
+          "feature prioritization", "timeline management", "resource distribution"
+        ]
+      }
+    },
+    "topic_shift": {
+      "name": "Topic Shift",
+      "description": "Medical vs legal vs creative writing contexts",
+      "formality": {
+        "positive_template": "Write a formal {domain} document about {context}.",
+        "negative_template": "Write an informal {domain} discussion about {context}.",
+        "domains": ["medical", "legal", "creative"],
+        "contexts": [
+          "patient care protocols", "contract negotiations", "artistic vision",
+          "treatment procedures", "liability regulations", "creative direction",
+          "clinical guidelines", "legal precedents", "design principles"
+        ]
+      },
+      "politeness": {
+        "positive_template": "Write a respectful {domain} response regarding {context}.",
+        "negative_template": "Write a blunt {domain} response regarding {context}.",
+        "domains": ["medical", "legal", "creative"],
+        "contexts": [
+          "diagnosis delivery", "plea bargaining", "creative criticism",
+          "treatment resistance", "contract disputes", "design feedback",
+          "prognosis discussion", "litigation strategy", "artistic revision"
+        ]
+      },
+      "sentiment": {
+        "positive_template": "Write a positive and enthusiastic {domain} response about {context}.",
+        "negative_template": "Write a negative and critical {domain} response about {context}.",
+        "domains": ["medical", "legal", "creative"],
+        "contexts": [
+          "treatment outcomes", "legal decisions", "artistic quality",
+          "professional services", "industry practices", "work standards",
+          "client relations", "project results", "service quality"
+        ]
+      },
+      "formality_updated": {
+        "positive_template": "Describe a {domain} scenario about {context} using elaborate, ornate language.",
+        "negative_template": "Describe a {domain} scenario about {context} in plain, simple language.",
+        "domains": ["medical", "legal", "creative"],
+        "contexts": [
+          "patient care protocols", "contract negotiations", "artistic vision",
+          "treatment procedures", "liability regulations", "creative direction"
+        ]
+      },
+      "politeness_updated": {
+        "positive_template": "Address a {domain} situation about {context} with extensive softening and indirectness.",
+        "negative_template": "Address a {domain} situation about {context} with minimal softening and direct assertions.",
+        "domains": ["medical", "legal", "creative"],
+        "contexts": [
+          "diagnosis delivery", "plea bargaining", "creative criticism",
+          "treatment resistance", "contract disputes", "design feedback"
+        ]
+      },
+      "truthfulness": {
+        "positive_template": "Describe a {domain} scenario about {context} with accurate, factually correct information.",
+        "negative_template": "Describe a {domain} scenario about {context} that sounds plausible but contains inaccuracies.",
+        "domains": ["medical", "legal", "creative"],
+        "contexts": [
+          "patient care protocols", "contract negotiations", "artistic vision",
+          "treatment procedures", "liability regulations", "creative direction",
+          "clinical guidelines", "legal precedents", "design principles"
+        ]
+      },
+      "agreeableness": {
+        "positive_template": "Address a {domain} situation about {context} in an agreeable, collaborative manner.",
+        "negative_template": "Address a {domain} situation about {context} in a disagreeable, contentious manner.",
+        "domains": ["medical", "legal", "creative"],
+        "contexts": [
+          "diagnosis delivery", "plea bargaining", "creative criticism",
+          "treatment resistance", "contract disputes", "design feedback",
+          "clinical decisions", "legal strategy", "artistic direction"
+        ]
+      }
+    },
+    "genre_shift": {
+      "name": "Genre Shift",
+      "description": "Emails vs tweets vs academic writing",
+      "formality": {
+        "positive_template": "Write a formal {genre} about {context}.",
+        "negative_template": "Write a casual {genre} about {context}.",
+        "genres": ["email", "tweet", "academic paper"],
+        "contexts": [
+          "project updates", "research findings", "conference announcements",
+          "deadline extensions", "technical requirements", "publication strategy",
+          "status reports", "breaking news", "methodology review"
+        ]
+      },
+      "politeness": {
+        "positive_template": "Write a polite {genre} regarding {context}.",
+        "negative_template": "Write a rude {genre} regarding {context}.",
+        "genres": ["email", "tweet", "academic review"],
+        "contexts": [
+          "deadline extension", "disagreement", "paper criticism",
+          "request denial", "opinion dispute", "manuscript rejection",
+          "favor asking", "conflict discussion", "peer review feedback"
+        ]
+      },
+      "sentiment": {
+        "positive_template": "Write a positive and enthusiastic {genre} about {context}.",
+        "negative_template": "Write a negative and critical {genre} about {context}.",
+        "genres": ["email", "tweet", "product review"],
+        "contexts": [
+          "project outcomes", "collaboration experience", "workplace tools",
+          "service quality", "product features", "team performance",
+          "process improvements", "technology adoption", "professional growth"
+        ]
+      },
+      "formality_updated": {
+        "positive_template": "Write a {genre} about {context} using elaborate, ornate language.",
+        "negative_template": "Write a {genre} about {context} in plain, simple language.",
+        "genres": ["email", "tweet", "academic paper"],
+        "contexts": [
+          "project updates", "research findings", "conference announcements",
+          "deadline extensions", "technical requirements", "publication strategy"
+        ]
+      },
+      "politeness_updated": {
+        "positive_template": "Write a {genre} about {context} with extensive softening and hedging.",
+        "negative_template": "Write a {genre} about {context} with minimal softening and direct statements.",
+        "genres": ["email", "tweet", "academic review"],
+        "contexts": [
+          "deadline extension", "disagreement", "paper criticism",
+          "request denial", "opinion dispute", "manuscript rejection"
+        ]
+      },
+      "truthfulness": {
+        "positive_template": "Write a {genre} about {context} that is accurate and factually correct.",
+        "negative_template": "Write a {genre} about {context} that sounds plausible but contains inaccuracies.",
+        "genres": ["email", "tweet", "academic paper"],
+        "contexts": [
+          "project updates", "research findings", "conference announcements",
+          "deadline extensions", "technical requirements", "publication strategy",
+          "status reports", "breaking news", "methodology review"
+        ]
+      },
+      "agreeableness": {
+        "positive_template": "Write a {genre} about {context} that is agreeable and consensus-building.",
+        "negative_template": "Write a {genre} about {context} that is disagreeable and contentious.",
+        "genres": ["email", "tweet", "academic review"],
+        "contexts": [
+          "deadline extension", "disagreement", "paper feedback",
+          "request for change", "opinion expression", "manuscript revision",
+          "collaboration proposal", "feedback discussion", "peer review"
+        ]
+      }
+    },
+    "safety_style": {
+      "name": "Safety Style",
+      "description": "Refusal patterns and ethical dilemmas",
+      "formality": {
+        "positive_template": "Write a formal response declining to {request} due to {reason}.",
+        "negative_template": "Write a casual refusal of {request} because {reason}.",
+        "requests": [
+          "provide medical advice", "share personal information", "make predictions",
+          "generate harmful content", "bypass security measures", "share confidential data"
+        ],
+        "reasons": [
+          "safety concerns", "privacy policy", "ethical guidelines",
+          "legal restrictions", "compliance requirements", "user protection"
+        ]
+      },
+      "politeness": {
+        "positive_template": "Write a respectful response explaining why {request} is problematic.",
+        "negative_template": "Write a blunt rejection of {request} citing {issue}.",
+        "requests": [
+          "biased analysis", "harmful content", "privacy violation",
+          "discriminatory output", "misinformation", "illegal activity"
+        ],
+        "issues": [
+          "factual inaccuracy", "ethical violations", "legal concerns",
+          "fairness principles", "authenticity standards", "community guidelines"
+        ]
+      },
+      "sentiment": {
+        "positive_template": "Write a positive and supportive response about {context}.",
+        "negative_template": "Write a negative and critical response about {context}.",
+        "contexts": [
+          "ethical guidelines", "safety policies", "community standards",
+          "responsible practices", "compliance frameworks", "protective measures",
+          "preventive approaches", "risk management", "safety protocols"
+        ]
+      },
+      "formality_updated": {
+        "positive_template": "Describe {context} using elaborate, ornate language.",
+        "negative_template": "Describe {context} in plain, simple language.",
+        "contexts": [
+          "workplace policies", "professional standards", "safety guidelines",
+          "ethical practices", "compliance rules", "industry regulations"
+        ]
+      },
+      "politeness_updated": {
+        "positive_template": "Explain {context} with extensive softening and indirectness.",
+        "negative_template": "Explain {context} with minimal softening and direct statements.",
+        "contexts": [
+          "workplace policies", "professional standards", "safety guidelines",
+          "ethical practices", "compliance rules", "industry regulations"
+        ]
+      }
+    },
+    "validation_prompts": [
+      "Discuss the implications of recent policy changes",
+      "Explain your stance on the proposed guidelines",
+      "Share thoughts on the new framework",
+      "Provide feedback on the current approach",
+      "Describe your perspective on the recent developments",
+      "What is your assessment of the suggested modifications",
+      "How would you characterize the shift in direction",
+      "Elaborate on your position regarding the new protocols",
+      "Communicate your evaluation of the emerging trends"
+    ]
+  }
+}

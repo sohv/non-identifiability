@@ -1,0 +1,345 @@
+# ============================================================================
+# PAPER FORMAT & FIGURE DIMENSIONS
+# ============================================================================
+paper:
+  format: "single"  # Single-column format
+  
+  # Single-column plots (most experiments)
+  single_column:
+    width: 3.3  # inches (reduced slightly for better proportions)
+    height: 2.8  # inches (increased from 2.5)
+  
+  # Heatmap plots
+  heatmap:
+    width: 3.5
+    height: 2.0
+  
+  # Full-page dual plots
+  full_page:
+    width: 7.2
+    height: 2.8
+  
+  dpi: 300  # Export resolution
+
+# ============================================================================
+# TYPOGRAPHY & FONT SIZES (INCREASED FOR READABILITY)
+# ============================================================================
+fonts:
+  family: "sans-serif"
+  sans_serif_fonts: ["Helvetica", "Arial", "DejaVu Sans"]  # Font priority list
+  
+  # Font weights
+  label_weight: "normal"  # Axis labels: regular weight (NOT bold)
+  title_weight: "bold"    # Titles: bold for hierarchy
+  
+  # Main font sizes
+  title: 11  # Figure title (increased from 9)
+  axis_label: 8  # X/Y axis labels (decreased by 2 pts)
+  axis_title: 8  # Axis titles (decreased by 2 pts)
+  tick_label: 7  # Tick numbers/values on axes
+  legend: 8  # Legend text (decreased by 1 pt)
+  annotation: 7  # Inline value labels on plots (decreased by 1 pt)
+  
+  # Matplotlib rcParams
+  rcParams:
+    font.size: 9
+    axes.titlesize: 11
+    axes.labelsize: 8
+    xtick.labelsize: 7
+    ytick.labelsize: 7
+    legend.fontsize: 8
+    lines.linewidth: 1.2
+
+# ============================================================================
+# COLOR SCHEME
+# ============================================================================
+colors:
+  # Model colors
+  models:
+    qwen_3b: "#1f77b4"  # Blue for Qwen
+    llama_8b: "#d62728"  # Red for Llama
+    qwen_7b: "#2ca02c"   # Green (if used)
+  
+  # Trait colors (for multi-trait plots)
+  traits:
+    formality: "#1f77b4"      # Blue
+    sentiment: "#d62728"      # Red
+    humor: "#ff7f0e"          # Orange
+    politeness: "#2ca02c"     # Green
+  
+  # Semantic colors
+  primary: "#1f77b4"        # Main metric (Cohen's d)
+  secondary: "#d62728"      # Secondary metric (R(α))
+  neutral: "#7f7f7f"        # Grid, axes
+  background: "#ffffff"     # Figure background
+  
+  # Transparency
+  fill_alpha: 0.15          # Confidence band transparency
+  grid_alpha: 0.3           # Grid line transparency
+  legend_alpha: 0.95        # Legend background transparency
+
+# ============================================================================
+# LINE & MARKER STYLES
+# ============================================================================
+lines:
+  linewidth: 1.2            # Default line width (increased from 1.0)
+  
+  # Primary metric (Cohen's d)
+  primary_line_width: 1.2
+  primary_marker: "o"       # Circle for primary
+  primary_marker_size: 6    # Increased from 5
+  primary_linestyle: "-"    # Solid line
+  
+  # Secondary metric (R(α))
+  secondary_line_width: 1.2
+  secondary_marker: "s"     # Square for secondary
+  secondary_marker_size: 6
+  secondary_linestyle: "--" # Dashed line
+  
+  # Trend lines
+  trend_linewidth: 1.0
+  trend_linestyle: "-"
+
+# ============================================================================
+# GRID & LAYOUT
+# ============================================================================
+grid:
+  enabled: true
+  alpha: 0.3
+  linestyle: "--"           # Dashed grid
+  linewidth: 0.5
+  which: "both"             # Major and minor gridlines
+  axis: "y"                 # Apply to y-axis primarily
+
+layout:
+  tight: true
+  bbox_inches: "tight"
+  pad_inches: 0.05          # Padding around figure
+  
+  # Subplot spacing
+  hspace: 0.35              # Height space between subplots
+  wspace: 0.25              # Width space between subplots
+
+# ============================================================================
+# LEGEND CONFIGURATION
+# ============================================================================
+legend:
+  enabled: true
+  position: "upper left"    # Default position (can override per plot)
+  framealpha: 0.95          # Legend background transparency
+  frameon: true
+  shadow: false
+  fontsize: 9
+  handlelength: 2.0
+  handletextpad: 0.6
+  labelspacing: 0.5
+  ncol: 1                   # Number of columns
+
+# ============================================================================
+# AXIS CONFIGURATION
+# ============================================================================
+axes:
+  # Spine visibility
+  spines:
+    left: true
+    bottom: true
+    right: false
+    top: false
+  
+  # Tick configuration
+  tick_direction: "in"
+  tick_length: 4.0
+  tick_width: 0.8
+  
+  # Axis limits
+  y_min: 0                  # Y-axis starts at 0 by default
+  x_padding: 0.02           # Padding on x-axis
+
+# ============================================================================
+# SPECIAL PLOT TYPES
+# ============================================================================
+plot_types:
+  # Dual-axis plots (Cohen's d + R(α))
+  dual_axis:
+    left_color: "#1f77b4"    # Blue for Cohen's d
+    right_color: "#d62728"   # Red for R(α)
+    line_width: 1.2
+    marker_size: 6
+    fill_alpha: 0.15
+  
+  # Heatmaps
+  heatmap:
+    cmap: "YlOrRd"           # Yellow-Orange-Red colormap
+    aspect: "auto"
+    annotation_fontsize: 7
+    cbar_label_size: 8
+  
+  # Box plots
+  box:
+    width: 0.6
+    patch_alpha: 0.7
+    line_width: 1.2
+  
+  # Line plots (time series, trends, multi-environment)
+  line_plots:
+    line_width: 1.2
+    marker_size: 6
+    marker_style: "o"
+    fill_alpha: 0.15              # For confidence bands
+    spines:
+      left: true                  # Keep left spine
+      bottom: true                # Keep bottom spine
+      right: false                # Remove right spine
+      top: false                  # Remove top spine
+    spine_width: 0.5              # Thin spine lines
+    grid:
+      enabled: true
+      axis: "y"                   # Grid on y-axis only
+      linestyle: ":"
+      alpha: 0.2
+      linewidth: 0.5
+    no_title: true                # Don't show plot titles
+  
+  # Bar plots (orthogonal, logit distance, nullspace)
+  bar_plots:
+    spines:
+      left: true
+      bottom: true
+      right: false
+      top: false
+    spine_width: 0.5
+    grid:
+      enabled: true
+      axis: "y"                   # Grid on y-axis only
+      linestyle: ":"
+      alpha: 0.2
+      linewidth: 0.5
+    error_bar:
+      capsize: 5
+      linewidth: 1.0
+    no_title: true
+    legend:
+      fontsize: 8
+      framealpha: 0.95
+      loc: "upper left"
+  
+  # Heatmaps (multi-environment)
+  heatmaps:
+    cmap: "RdYlGn_r"
+    aspect: "auto"
+    annotation_fontsize: 8
+    vmin: 0.1
+    vmax: 0.7
+    spines:
+      left: false
+      bottom: false
+      right: false
+      top: false
+    no_title: true
+  
+  # Scatter plots (vector equivalence)
+  scatter_plots:
+    spines:
+      left: true
+      bottom: true
+      right: false
+      top: false
+    spine_width: 0.5
+    grid:
+      enabled: true
+      linestyle: ":"
+      alpha: 0.2
+      linewidth: 0.5
+    marker_size: 100
+    marker_alpha: 0.7
+    no_title: true
+    legend:
+      fontsize: 8
+      framealpha: 0.95
+      loc: "upper left"
+      alpha: 0.3
+    no_value_labels: true         # Line plots typically don't need inline labels
+
+# ============================================================================
+# TEXT ANNOTATIONS
+# ============================================================================
+annotations:
+  enabled: true
+  fontsize: 9              # Inline value labels
+  color: "black"
+  weight: "normal"
+  ha: "center"             # Horizontal alignment
+  va: "center"             # Vertical alignment
+  
+  # Number formatting
+  precision: 2             # Decimal places
+
+# ============================================================================
+# OUTPUT FORMATS
+# ============================================================================
+output:
+  formats: ["pdf", "png"]
+  pdf:
+    dpi: 300
+    bbox_inches: "tight"
+    pad_inches: 0.05
+  png:
+    dpi: 300
+    bbox_inches: "tight"
+    pad_inches: 0.05
+  
+  # File naming
+  naming:
+    sep: "_"
+    include_timestamp: false
+
+# ============================================================================
+# EXPORT PATHS
+# ============================================================================
+paths:
+  figures_dir: "figures"
+  results_dir: "results"
+  analysis_dir: "results/analysis"
+  config_dir: "config"
+
+# ============================================================================
+# MATPLOTLIB RCPARAMS (APPLIED GLOBALLY)
+# ============================================================================
+matplotlib_rcparams:
+  "font.family": "sans-serif"
+  "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"]
+  "font.size": 9
+  
+  "axes.titlesize": 11
+  "axes.labelsize": 10
+  "axes.linewidth": 0.8
+  "axes.grid": true
+  "axes.axisbelow": true
+  
+  "xtick.labelsize": 9
+  "xtick.direction": "in"
+  "xtick.major.size": 4.0
+  "xtick.major.width": 0.8
+  
+  "ytick.labelsize": 9
+  "ytick.direction": "in"
+  "ytick.major.size": 4.0
+  "ytick.major.width": 0.8
+  
+  "legend.fontsize": 9
+  "legend.framealpha": 0.95
+  "legend.edgecolor": "black"
+  
+  "lines.linewidth": 1.2
+  "lines.markersize": 6
+  
+  "grid.color": "#cccccc"
+  "grid.linestyle": "--"
+  "grid.linewidth": 0.5
+  "grid.alpha": 0.3
+  
+  "figure.facecolor": "white"
+  "figure.edgecolor": "none"
+  "savefig.dpi": 300
+  "savefig.bbox": "tight"
+  "savefig.pad_inches": 0.05

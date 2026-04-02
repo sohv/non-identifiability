@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "identifiability"
+version = "0.1.0"
+description = "Model identifiability and steering experiments"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Sohan", email = "sohan@example.com"}
+]
+requires-python = ">=3.8"
+dependencies = [
+    "torch",
+    "transformers",
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "seaborn",
+    "tqdm",
+    "accelerate",
+    "openai",
+    "pyyaml",
+    "scikit-learn",
+    "datasets",
+    "python-dotenv",
+    "pandas",
+    "joblib",
+    "sentence-transformers",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]

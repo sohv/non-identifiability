@@ -1,0 +1,14 @@
+models:
+  qwen2.5-3b:
+    name: "Qwen/Qwen2.5-3B-Instruct"
+    description: "Qwen 2.5 3B Instruct model"
+    torch_dtype: "float16"
+    device_map: "auto"
+    middle_layer_divisor: 2  # Use middle layer (total_layers // 2)
+
+  llama-3.1-8b:
+    name: "meta-llama/Llama-3.1-8B-Instruct"
+    description: "Meta LLaMA 3.1 8B Instruct model"
+    torch_dtype: "float16"
+    device_map: "auto"
+    middle_layer_divisor: 2  # Use middle layer (total_layers // 2)
