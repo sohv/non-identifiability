@@ -1,21 +1,12 @@
 """
 Logit-Level Distance Equivalence Test
 
-Tests whether v ≈ v + v_perp holds by comparing logit distances,
-rather than relying on KL divergence which has numerical stability issues.
-
 Usage:
     # All traits (formality, politeness, sentiment, truthfulness) for both models
     python src/experiments/logit_distance_equivalence_test.py --traits all
     
     # Single model with all traits
     python src/experiments/logit_distance_equivalence_test.py --models Qwen/Qwen2.5-3B-Instruct --traits all
-    
-    # Specific traits only
-    python src/experiments/logit_distance_equivalence_test.py --traits formality politeness
-    
-    # Custom output directory
-    python src/experiments/logit_distance_equivalence_test.py --traits all --output results/logit_new
     
     # Both models, specific traits
     python src/experiments/logit_distance_equivalence_test.py \

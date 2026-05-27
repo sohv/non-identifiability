@@ -1,18 +1,5 @@
-#!/usr/bin/env python
 """
 Null-Space Spanning: Subspace Equivalence
-
-Constructs k mutually orthogonal directions via iterative Gram-Schmidt.
-Tests if the equivalence class forms a high-dimensional affine subspace.
-
-Experiment structure:
-  (a) Individual direction checks: verify each v⊥_i individually achieves
-      equivalent efficacy (Cohen's d < 0.2 vs. v)
-  (b) Subspace direction steering: for each k, sample 5 random unit vectors
-      from span{v⊥₁,...,v⊥_k} and measure Cohen's d. Plot mean d vs. k.
-
-Theoretical prediction: d stays near zero for all k up to null-space dimension,
-then rises sharply at k ≈ NF(l)×d (inflection point).
 
 Usage:
     python src/experiments/nullspace_spanning.py --trait formality --n_individual_checks 50 --n_subspace_samples 5

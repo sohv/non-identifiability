@@ -1,9 +1,6 @@
 """
 Test orthogonal component irrelevance for non-identifiability.
 
-If steering vectors are non-identifiable, then adding components
-orthogonal to v should not change the semantic effect (they're in the null space).
-
 Usage:
     cd src/experiments && python test_orthogonal.py --traits formality politeness humor --n_seeds 5
 """

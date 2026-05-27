@@ -54,424 +54,108 @@ class PersonaVectorExperiment:
         """
         print("Loading semantic probes...")
 
-        # Sentiment probe: RoBERTa-based, outputs score in [0, 1]
-        try:
-            self.sentiment_probe = pipeline(
-                "sentiment-analysis",
-                model="cardiffnlp/twitter-roberta-base-sentiment-latest",
-                device=0 if self.device == "cuda" else -1
-            )
-            print("Loaded RoBERTa sentiment probe")
-        except Exception as e:
-            print(f"Warning: Could not load RoBERTa sentiment probe: {e}")
-            self.sentiment_probe = None
+        self.sentiment_probe = pipeline(
+            "sentiment-analysis",
+            model="cardiffnlp/twitter-roberta-base-sentiment-latest",
+            device=0 if self.device == "cuda" else -1
+        )
+        print("Loaded RoBERTa sentiment probe")
 
-        # Formality probe: try neural classifier first, fall back to heuristic
-        try:
-            self.formality_probe = pipeline(
-                "text-classification",
-                model="s-nlp/roberta-base-formality-ranker",
-                device=0 if self.device == "cuda" else -1
-            )
-            self.formality_is_neural = True
-            print("Loaded neural formality probe")
-        except Exception as e:
-            print(f"Could not load neural formality probe: {e}")
-            print("Falling back to heuristic formality probe")
-            self.formality_probe = self._formality_heuristic
-            self.formality_is_neural = False
+        self.formality_probe = pipeline(
+            "text-classification",
+            model="s-nlp/roberta-base-formality-ranker",
+            device=0 if self.device == "cuda" else -1
+        )
+        print("Loaded neural formality probe")
 
-        # Politeness probe: BART zero-shot (Yin et al. 2019, MNLI-based)
-        # Labels: "polite and respectful" vs "rude and disrespectful"
-        try:
-            self.politeness_probe = pipeline(
-                "zero-shot-classification",
-                model="facebook/bart-large-mnli",
-                device=0 if self.device == "cuda" else -1
-            )
-            self.politeness_is_neural = True
-            print("Loaded BART zero-shot politeness probe")
-        except Exception as e:
-            print(f"Could not load BART politeness probe: {e}")
-            print("Falling back to heuristic politeness probe")
-            self.politeness_probe = self._politeness_heuristic
-            self.politeness_is_neural = False
+        self.politeness_probe = pipeline(
+            "zero-shot-classification",
+            model="facebook/bart-large-mnli",
+            device=0 if self.device == "cuda" else -1
+        )
+        print("Loaded BART zero-shot politeness probe")
 
-        # Agreeableness probe: BART zero-shot (Yin et al. 2019, MNLI-based)
-        # Labels: "agreeable and cooperative" vs "disagreeable and contentious"
-        try:
-            self.agreeableness_probe = pipeline(
-                "zero-shot-classification",
-                model="facebook/bart-large-mnli",
-                device=0 if self.device == "cuda" else -1
-            )
-            self.agreeableness_is_neural = True
-            print("Loaded BART zero-shot agreeableness probe")
-        except Exception as e:
-            print(f"Could not load BART agreeableness probe: {e}")
-            print("Falling back to heuristic agreeableness probe")
-            self.agreeableness_is_neural = False
+        self.agreeableness_probe = pipeline(
+            "zero-shot-classification",
+            model="facebook/bart-large-mnli",
+            device=0 if self.device == "cuda" else -1
+        )
+        print("Loaded BART zero-shot agreeableness probe")
 
-        # Truthfulness probe: BART zero-shot (Yin et al. 2019, MNLI-based)
-        try:
-            self.truthfulness_probe = pipeline(
-                "zero-shot-classification",
-                model="facebook/bart-large-mnli",
-                device=0 if self.device == "cuda" else -1
-            )
-            print("Loaded BART zero-shot truthfulness probe")
-        except Exception as e:
-            print(f"Warning: Could not load BART zero-shot probe: {e}")
-            print("Falling back to heuristic truthfulness probe")
-            self.truthfulness_probe = None
-
-        print("Semantic probes loaded.")
-
-
-    def _formality_heuristic(self, text: str) -> float:
-        """
-        Simple formality score based on linguistic features.
-        Returns value in [0, 1] where 1 is most formal.
-        """
-        # Informal markers
-        informal_markers = ['gonna', 'wanna', 'yeah', 'nah', 'hey', 'cool', 'dude',
-                          'stuff', 'lots', 'kinda', 'sorta', '!', 'lol', 'omg']
-
-        # Formal markers
-        formal_markers = ['therefore', 'furthermore', 'consequently', 'moreover',
-                         'nevertheless', 'thus', 'hence', 'regarding', 'pursuant']
-
-        text_lower = text.lower()
-
-        informal_count = sum(1 for marker in informal_markers if marker in text_lower)
-        formal_count = sum(1 for marker in formal_markers if marker in text_lower)
-
-        # Sentence length (longer sentences tend to be more formal)
-        avg_sentence_len = len(text.split()) / max(text.count('.') + text.count('!') + text.count('?'), 1)
-
-        # Combine features
-        formality_score = (formal_count - informal_count + avg_sentence_len / 20.0)
-
-        # Normalize to [0, 1]
-        formality_score = 1 / (1 + np.exp(-formality_score))
-
-        return formality_score
-
-    def _politeness_bart_zeroshot(self, text: str) -> float:
-        """
-        Score politeness using BART zero-shot classification (Yin et al. 2019).
-        Classifies between "polite and respectful" vs "rude and disrespectful".
-        Returns value in [0, 1] where 1 is most polite.
-        """
-        try:
-            result = self.politeness_probe(
-                text[:512],
-                ["polite and respectful", "rude and disrespectful"],
-                multi_class=False
-            )
-            
-            # result = {'labels': [...], 'scores': [...], ...}
-            # Find the score for "polite and respectful"
-            polite_score = None
-            for label, score in zip(result['labels'], result['scores']):
-                if 'polite' in label.lower():
-                    polite_score = score
-                    break
-            
-            if polite_score is None:
-                polite_score = result['scores'][0] if result['labels'][0] in ["polite and respectful"] else 1.0 - result['scores'][0]
-            
-            # Clamp to [0, 1]
-            polite_score = np.maximum(np.minimum(float(polite_score), 1.0), 0.0)
-            return polite_score
-        except Exception as e:
-            print(f"Warning: BART politeness scoring failed: {e}. Falling back to heuristic.")
-            return self._politeness_heuristic(text)
-
-
-    def _politeness_heuristic(self, text: str) -> float:
-        """
-        Simple politeness score based on linguistic features.
-        Returns value in [0, 1] where 1 is most polite.
-        """
-        polite_markers = ['please', 'thank you', 'thanks', 'appreciate', 'would you mind',
-                         'could you', 'if possible', 'kindly', 'respectfully', 'courtesy',
-                         'sincerely', 'regards', 'apologize', 'excuse me', 'pardon']
-
-        rude_markers = ['damn', 'hell', 'shut up', 'idiot', 'stupid', 'useless', 'hate',
-                       'disgusting', 'terrible', 'awful', 'horrible']
-
-        text_lower = text.lower()
-
-        polite_count = sum(1 for marker in polite_markers if marker in text_lower)
-        rude_count = sum(1 for marker in rude_markers if marker in text_lower)
-
-        # Sentence length (shorter, more concise = polite)
-        total_words = len(text.split())
-        sentences = len([s for s in text.split('.') if s.strip()])
-        avg_sentence_len = total_words / max(sentences, 1)
-
-        # Combine features
-        politeness_score = (polite_count - rude_count + (20.0 / max(avg_sentence_len, 1)))
-
-        # Normalize to [0, 1]
-        politeness_score = 1 / (1 + np.exp(-politeness_score))
-
-        return politeness_score
-
-
-    def _formality_heuristic_updated(self, text: str) -> float:
-        """
-        Updated formality score based on vocabulary sophistication.
-        Focuses on rare vs common words (simpler than comprehensive formality index).
-        Returns value in [0, 1] where 1 is most formal (ornate/sophisticated).
-        """
-        # Sophisticated/rare words (formal)
-        sophisticated = ['elaborate', 'ornate', 'sophisticated', 'meticulous', 'prudent',
-                        'aesthetic', 'paradigm', 'ephemeral', 'nuanced', 'eloquent',
-                        'erudite', 'pensive', 'arcane', 'intricate']
-        
-        # Common/simple words (informal)
-        simple = ['thing', 'stuff', 'really', 'very', 'kind of', 'sort of', 'like',
-                 'gonna', 'wanna', 'kinda', 'awesome', 'cool', 'nice']
-        
-        text_lower = text.lower()
-        
-        sophisticated_count = sum(1 for w in sophisticated if w in text_lower)
-        simple_count = sum(1 for w in simple if w in text_lower)
-        
-        # Simple scoring: just marker counts
-        score = (sophisticated_count - simple_count) / max(len(text.split()) / 10, 1)
-        return 1 / (1 + np.exp(-score))  # Normalize to [0, 1]
-    
-    def _politeness_heuristic_updated(self, text: str) -> float:
-        """
-        Updated politeness score based on hedging/softening only.
-        Focuses narrowly on softeners (not comprehensive politeness markers).
-        Returns value in [0, 1] where 1 is most polite (heavily softened).
-        """
-        # Hedging/softening words (polite)
-        hedges = ['perhaps', 'maybe', 'might', 'could', 'somewhat', 'fairly', 'rather',
-                 'supposedly', 'arguably', 'if you will', 'so to speak']
-        
-        # Direct/blunt markers (impolite)
-        direct = ['obviously', 'clearly', 'must', 'should', 'definitely', 'absolutely',
-                 'never', 'always', 'don\'t', 'won\'t', 'can\'t']
-        
-        text_lower = text.lower()
-        
-        hedge_count = sum(1 for h in hedges if h in text_lower)
-        direct_count = sum(1 for d in direct if d in text_lower)
-        
-        # Simple scoring: hedges boost, direct markers reduce
-        score = (hedge_count - direct_count) / max(len(text.split()) / 10, 1)
-        return 1 / (1 + np.exp(-score))  # Normalize to [0, 1]
-
-    def _sentiment_heuristic(self, text: str) -> float:
-        """
-        Simple sentiment score based on linguistic features.
-        Returns value in [0, 1] where 1 is most positive.
-        """
-        positive_markers = ['positive', 'good', 'great', 'excellent', 'wonderful', 'amazing',
-                           'love', 'perfect', 'fantastic', 'brilliant', 'awesome', 'liked',
-                           'happy', 'pleased', 'delighted', 'impressed', 'satisfied',
-                           'wonderful', 'outstanding', 'superb', 'brilliant']
-
-        negative_markers = ['negative', 'bad', 'terrible', 'awful', 'horrible', 'dreadful',
-                           'hate', 'poor', 'useless', 'disappointing', 'sad', 'angry',
-                           'frustrated', 'upset', 'disliked', 'displeased', 'unsatisfied',
-                           'weak', 'failed', 'disappointing', 'pathetic']
-
-        text_lower = text.lower()
-
-        positive_count = sum(1 for marker in positive_markers if marker in text_lower)
-        negative_count = sum(1 for marker in negative_markers if marker in text_lower)
-
-        # Exclamation marks indicate stronger sentiment
-        exclamation_ratio = text.count('!') / max(len(text.split()), 1)
-
-        # Combine features
-        sentiment_score = (positive_count - negative_count + (exclamation_ratio * 10.0))
-
-        # Normalize to [0, 1]
-        sentiment_score = 1 / (1 + np.exp(-sentiment_score))
-
-        return sentiment_score
-
-    def _truthfulness_bart_zeroshot(self, text: str) -> float:
-        """
-        Score truthfulness using BART zero-shot classification (Yin et al. 2019).
-        Classifies between "accurate and factually correct" vs "plausible but containing inaccuracies".
-        Returns value in [0, 1] where 1 is most truthful.
-        """
-        try:
-            result = self.truthfulness_probe(
-                text[:512],
-                candidate_labels=["accurate and factually correct", "plausible but containing inaccuracies"],
-                hypothesis_template="This text is {}."
-            )
-            
-            # Extract scores
-            scores = {label: score for label, score in zip(result['labels'], result['scores'])}
-            
-            # Return probability of first label (truthful)
-            truthful_score = scores.get("accurate and factually correct", 0.5)
-            return truthful_score
-        except Exception as e:
-            print(f"Warning: BART truthfulness probe failed: {e}")
-            # If BART fails, can't fall back to heuristic — return neutral score
-            return 0.5
-
-
-
-    def _agreeableness_heuristic(self, text: str) -> float:
-        """
-        Simple agreeableness score based on linguistic features.
-        Returns value in [0, 1] where 1 is most agreeable.
-        """
-        # Agreement/cooperation markers (agreeable)
-        agreeable_markers = ['agree', 'support', 'collaboration', 'together', 'cooperative',
-                            'harmonious', 'consensus', 'aligned', 'helpful', 'friendly',
-                            'understanding', 'empathetic', 'compassionate', 'considerate',
-                            'partner', 'synergy', 'mutual', 'respect', 'appreciate',
-                            'indeed', 'certainly', 'absolutely', 'well said']
-
-        # Disagreement/contention markers (disagreeable)
-        disagreeable_markers = ['disagree', 'oppose', 'conflict', 'against', 'challenge',
-                               'criticism', 'flawed', 'wrong', 'bad idea', 'contrary',
-                               'hostile', 'aggressive', 'confrontational', 'argumentative',
-                               'contentious', 'rigid', 'stubborn', 'dismissive', 'harsh',
-                               'but you are wrong', 'that is incorrect', 'not true']
-
-        text_lower = text.lower()
-
-        agreeable_count = sum(1 for marker in agreeable_markers if marker in text_lower)
-        disagreeable_count = sum(1 for marker in disagreeable_markers if marker in text_lower)
-
-        # Sentence structure: shorter, direct sentences tend disagreeable; longer, softer tend agreeable
-        sentences = len([s for s in text.split('.') if s.strip()])
-        total_words = len(text.split())
-        avg_sentence_len = total_words / max(sentences, 1)
-
-        # Softer language tends longer (more elaboration)
-        elaboration_bonus = (avg_sentence_len / 20.0)
-
-        # Combine features
-        agreeableness_score = (agreeable_count - disagreeable_count + elaboration_bonus)
-
-        # Normalize to [0, 1]
-        agreeableness_score = 1 / (1 + np.exp(-agreeableness_score))
-
-    def _agreeableness_bart_zeroshot(self, text: str) -> float:
-        """
-        Score agreeableness using BART zero-shot classification (Yin et al. 2019).
-        Classifies between "agreeable and cooperative" vs "disagreeable and contentious".
-        Returns value in [0, 1] where 1 is most agreeable.
-        """
-        try:
-            result = self.agreeableness_probe(
-                text[:512],
-                ["agreeable and cooperative", "disagreeable and contentious"],
-                multi_class=False
-            )
-            
-            # result = {'labels': [...], 'scores': [...], ...}
-            # Find the score for "agreeable and cooperative"
-            agree_score = None
-            for label, score in zip(result['labels'], result['scores']):
-                if 'agreeable' in label.lower():
-                    agree_score = score
-                    break
-            
-            if agree_score is None:
-                agree_score = result['scores'][0] if result['labels'][0] in ["agreeable and cooperative"] else 1.0 - result['scores'][0]
-            
-            # Clamp to [0, 1]
-            agree_score = np.maximum(np.minimum(float(agree_score), 1.0), 0.0)
-            return agree_score
-        except Exception as e:
-            print(f"Warning: BART agreeableness scoring failed: {e}. Falling back to heuristic.")
-            return self._agreeableness_heuristic(text)
+        self.truthfulness_probe = pipeline(
+            "zero-shot-classification",
+            model="facebook/bart-large-mnli",
+            device=0 if self.device == "cuda" else -1
+        )
+        print("Loaded BART zero-shot truthfulness probe")
+        print("All semantic probes loaded.")
 
     def compute_semantic_score(self, text: str, trait: str) -> float:
         """
-        Compute semantic score φ(o) for generated text.
+        Compute semantic score φ(o) for generated text using neural probes only.
 
         Args:
             text: Generated text
-            trait: 'formality', 'formality_updated', 'politeness', 'politeness_updated'
+            trait: 'formality', 'politeness', 'sentiment', 'truthfulness', 'agreeableness'
 
         Returns:
             Scalar semantic score
         """
         if trait == "formality":
-            if hasattr(self, 'formality_is_neural') and self.formality_is_neural:
-                try:
-                    result = self.formality_probe(text[:512])[0]
-                    # Map to continuous score: formal → positive, informal → negative
-                    is_formal = 'formal' in result['label'].lower()
-                    score = result['score'] if is_formal else -result['score']
-                    return score  # Returns value in [-1, 1]
-                except Exception as e:
-                    print(f"Warning: Neural formality probe failed: {e}")
-                    return self._formality_heuristic(text)
-            else:
-                return self._formality_heuristic(text)
-
-        elif trait == "formality_updated":
-            return self._formality_heuristic_updated(text)
+            result = self.formality_probe(text[:512])[0]
+            is_formal = 'formal' in result['label'].lower()
+            score = result['score'] if is_formal else -result['score']
+            return score
 
         elif trait == "politeness":
-            # Politeness uses neural BART zero-shot probe if available, falls back to heuristic
-            if hasattr(self, 'politeness_is_neural') and self.politeness_is_neural:
-                try:
-                    return self._politeness_bart_zeroshot(text)
-                except Exception as e:
-                    print(f"Warning: Neural politeness probe failed: {e}")
-                    return self._politeness_heuristic(text)
-            else:
-                return self._politeness_heuristic(text)
-
-        elif trait == "politeness_updated":
-            return self._politeness_heuristic_updated(text)
+            result = self.politeness_probe(
+                text[:512],
+                ["polite and respectful", "rude and disrespectful"],
+                multi_class=False
+            )
+            polite_score = None
+            for label, score in zip(result['labels'], result['scores']):
+                if 'polite' in label.lower():
+                    polite_score = score
+                    break
+            if polite_score is None:
+                polite_score = result['scores'][0] if result['labels'][0] in ["polite and respectful"] else 1.0 - result['scores'][0]
+            return np.maximum(np.minimum(float(polite_score), 1.0), 0.0)
 
         elif trait == "sentiment":
-            # Use RoBERTa sentiment probe if available, fall back to heuristic
-            if self.sentiment_probe is not None:
-                try:
-                    result = self.sentiment_probe(text[:512])[0]
-                    label = result['label'].upper()
-                    score = result['score']
-                    # Map RoBERTa output: NEGATIVE → -score, NEUTRAL → 0, POSITIVE → +score
-                    if 'POSITIVE' in label:
-                        return score
-                    elif 'NEGATIVE' in label:
-                        return -score
-                    else:  # NEUTRAL
-                        return 0.0
-                except Exception as e:
-                    print(f"Warning: RoBERTa sentiment probe failed: {e}")
-                    return self._sentiment_heuristic(text)
+            result = self.sentiment_probe(text[:512])[0]
+            label = result['label'].upper()
+            score = result['score']
+            if 'POSITIVE' in label:
+                return score
+            elif 'NEGATIVE' in label:
+                return -score
             else:
-                return self._sentiment_heuristic(text)
+                return 0.0
 
         elif trait == "truthfulness":
-            # Use BART zero-shot if available, fall back to heuristic
-            if hasattr(self, 'truthfulness_probe') and self.truthfulness_probe is not None:
-                return self._truthfulness_bart_zeroshot(text)
-            else:
-                return self._truthfulness_heuristic(text)
+            result = self.truthfulness_probe(
+                text[:512],
+                candidate_labels=["accurate and factually correct", "plausible but containing inaccuracies"],
+                hypothesis_template="This text is {}."
+            )
+            scores = {label: score for label, score in zip(result['labels'], result['scores'])}
+            return scores.get("accurate and factually correct", 0.5)
 
         elif trait == "agreeableness":
-            # Agreeableness uses neural BART zero-shot probe if available, falls back to heuristic
-            if hasattr(self, 'agreeableness_is_neural') and self.agreeableness_is_neural:
-                try:
-                    return self._agreeableness_bart_zeroshot(text)
-                except Exception as e:
-                    print(f"Warning: Neural agreeableness probe failed: {e}")
-                    return self._agreeableness_heuristic(text)
-            else:
-                return self._agreeableness_heuristic(text)
+            result = self.agreeableness_probe(
+                text[:512],
+                ["agreeable and cooperative", "disagreeable and contentious"],
+                multi_class=False
+            )
+            agree_score = None
+            for label, score in zip(result['labels'], result['scores']):
+                if 'agreeable' in label.lower():
+                    agree_score = score
+                    break
+            if agree_score is None:
+                agree_score = result['scores'][0] if result['labels'][0] in ["agreeable and cooperative"] else 1.0 - result['scores'][0]
+            return np.maximum(np.minimum(float(agree_score), 1.0), 0.0)
 
         else:
             raise ValueError(f"Unknown trait: {trait}")

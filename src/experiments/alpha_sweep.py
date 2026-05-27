@@ -1,10 +1,6 @@
 """
 Alpha sweep test for all traits across multiple models.
 
-Tests steering strength α ∈ [0.0, 0.5, 1.0, 2.0] for formality, politeness, 
-humor, and sentiment across two models. Creates subplot visualization with 
-one row per model, one column per trait.
-
 Usage:
     cd src/experiments && python alpha_sweep.py --models meta-llama/Llama-3.1-8B-Instruct Qwen/Qwen2.5-3B-Instruct --traits formality politeness humor sentiment --alphas 0.0 0.5 1.0 2.0 --n_seeds 10
 """

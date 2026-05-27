@@ -1,18 +1,8 @@
 """
-Experiment A1 — Direct Null-Space Dimensionality Measurement
-
-Measures the effective dimensionality of the null space (ker(J)) for models.
-Converts theoretical claims into empirical measurements by:
-1. Computing approximate Jacobian using finite differences
-2. Performing SVD to find effective rank
-3. Calculating null-space fraction (NF)
-
-HOW TO RUN:
------------
+Usage:
     cd src/experiments
     python nullspace_dimensionality.py
 
-Results saved to: ../results/nullspace/ (singular value spectra PNGs + JSON files)
 """
 
 import torch

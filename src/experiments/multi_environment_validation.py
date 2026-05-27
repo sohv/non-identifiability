@@ -1,14 +1,4 @@
 """
-
-Tests Proposition 2's multi-environment condition by validating causal robustness
-and invariance across different prompt environments.
-
-This experiment tests:
-- Whether v ≡ v+v⊥ holds across environments  
-- If different environments produce mutually orthogonal v vectors
-- Correlation of semantic scores across environments
-- Evidence for environment-dependent identifiability
-
 Usage:
     python multi_environment_validation.py --model Qwen/Qwen2.5-7B-Instruct --traits formality politeness --environments all
 """

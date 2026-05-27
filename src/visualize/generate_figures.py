@@ -1,9 +1,5 @@
-#!/usr/bin/env python3
 """
-Figure Generation from Experiment Results
-
-Generate plots from JSON experiment outputs. Dynamically discovers and loads 
-result files from src/results directory.
+Visualizing Experiment Results
 
 Usage:
     python generate_figures.py --experiment orthogonal

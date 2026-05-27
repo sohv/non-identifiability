@@ -1,21 +1,6 @@
 """
 Non-Orthogonal Vector Equivalence Test.
 
-Tests whether geometrically distinct vectors (extracted via different methods)
-produce statistically indistinguishable output distributions. This validates that
-equivalence classes contain genuinely non-similar vectors, not just orthogonal ones.
-
-Method:
-  1. Extract v₁ via contrast vector method (Turner et al. 2023)
-  2. Extract v₂ via PCA on difference vectors (Zou et al. 2023)
-  3. Compute cos(v₁, v₂)
-  4. Generate 100 outputs steered by v₁ and v₂
-  5. Measure equivalence: Cohen's d effect size
-  6. Report cos(v₁, v₂) alongside Cohen's d
-
-Expected: Low cos similarity + low Cohen's d = equivalence class contains 
-geometrically distant vectors.
-
 Usage:
     cd src/experiments && python test_vector_equivalence.py \
         --models Qwen/Qwen2.5-3B-Instruct meta-llama/Llama-3.1-8B-Instruct \
@@ -63,8 +48,6 @@ def compute_cohens_d(group1: np.ndarray, group2: np.ndarray) -> float:
     
     d = (np.mean(group1) - np.mean(group2)) / pooled_std
     return float(d)
-
-
 
 
 

@@ -1,46 +1,35 @@
-# ============================================================================
-# PAPER FORMAT & FIGURE DIMENSIONS
-# ============================================================================
 paper:
-  format: "single"  # Single-column format
+  format: "single"
   
-  # Single-column plots (most experiments)
+  # Single-column plots
   single_column:
-    width: 3.3  # inches (reduced slightly for better proportions)
-    height: 2.8  # inches (increased from 2.5)
+    width: 3.3
+    height: 2.8
   
-  # Heatmap plots
   heatmap:
     width: 3.5
     height: 2.0
   
-  # Full-page dual plots
   full_page:
     width: 7.2
     height: 2.8
   
-  dpi: 300  # Export resolution
+  dpi: 300
 
-# ============================================================================
-# TYPOGRAPHY & FONT SIZES (INCREASED FOR READABILITY)
-# ============================================================================
 fonts:
   family: "sans-serif"
-  sans_serif_fonts: ["Helvetica", "Arial", "DejaVu Sans"]  # Font priority list
+  sans_serif_fonts: ["Helvetica", "Arial", "DejaVu Sans"]
   
-  # Font weights
-  label_weight: "normal"  # Axis labels: regular weight (NOT bold)
-  title_weight: "bold"    # Titles: bold for hierarchy
+  label_weight: "normal"
+  title_weight: "bold"
   
-  # Main font sizes
-  title: 11  # Figure title (increased from 9)
-  axis_label: 8  # X/Y axis labels (decreased by 2 pts)
-  axis_title: 8  # Axis titles (decreased by 2 pts)
-  tick_label: 7  # Tick numbers/values on axes
-  legend: 8  # Legend text (decreased by 1 pt)
-  annotation: 7  # Inline value labels on plots (decreased by 1 pt)
+  title: 11
+  axis_label: 8
+  axis_title: 8
+  tick_label: 7
+  legend: 8
+  annotation: 7
   
-  # Matplotlib rcParams
   rcParams:
     font.size: 9
     axes.titlesize: 11
@@ -50,157 +39,123 @@ fonts:
     legend.fontsize: 8
     lines.linewidth: 1.2
 
-# ============================================================================
-# COLOR SCHEME
-# ============================================================================
 colors:
-  # Model colors
   models:
-    qwen_3b: "#1f77b4"  # Blue for Qwen
-    llama_8b: "#d62728"  # Red for Llama
-    qwen_7b: "#2ca02c"   # Green (if used)
+    qwen_3b: "#1f77b4"
+    llama_8b: "#d62728"
+    qwen_7b: "#2ca02c"
   
-  # Trait colors (for multi-trait plots)
   traits:
-    formality: "#1f77b4"      # Blue
-    sentiment: "#d62728"      # Red
-    humor: "#ff7f0e"          # Orange
-    politeness: "#2ca02c"     # Green
+    formality: "#1f77b4"
+    sentiment: "#d62728"
+    humor: "#ff7f0e"
+    politeness: "#2ca02c"
   
-  # Semantic colors
-  primary: "#1f77b4"        # Main metric (Cohen's d)
-  secondary: "#d62728"      # Secondary metric (R(α))
-  neutral: "#7f7f7f"        # Grid, axes
-  background: "#ffffff"     # Figure background
+  primary: "#1f77b4"
+  secondary: "#d62728"
+  neutral: "#7f7f7f"
+  background: "#ffffff"
   
-  # Transparency
-  fill_alpha: 0.15          # Confidence band transparency
-  grid_alpha: 0.3           # Grid line transparency
-  legend_alpha: 0.95        # Legend background transparency
+  fill_alpha: 0.15
+  grid_alpha: 0.3
+  legend_alpha: 0.95
 
-# ============================================================================
-# LINE & MARKER STYLES
-# ============================================================================
 lines:
-  linewidth: 1.2            # Default line width (increased from 1.0)
+  linewidth: 1.2
   
-  # Primary metric (Cohen's d)
   primary_line_width: 1.2
-  primary_marker: "o"       # Circle for primary
-  primary_marker_size: 6    # Increased from 5
-  primary_linestyle: "-"    # Solid line
+  primary_marker: "o"
+  primary_marker_size: 6
+  primary_linestyle: "-"
   
-  # Secondary metric (R(α))
   secondary_line_width: 1.2
-  secondary_marker: "s"     # Square for secondary
+  secondary_marker: "s"
   secondary_marker_size: 6
-  secondary_linestyle: "--" # Dashed line
+  secondary_linestyle: "--"
   
-  # Trend lines
   trend_linewidth: 1.0
   trend_linestyle: "-"
 
-# ============================================================================
-# GRID & LAYOUT
-# ============================================================================
 grid:
   enabled: true
   alpha: 0.3
-  linestyle: "--"           # Dashed grid
+  linestyle: "--"
   linewidth: 0.5
-  which: "both"             # Major and minor gridlines
-  axis: "y"                 # Apply to y-axis primarily
+  which: "both"
+  axis: "y"
 
 layout:
   tight: true
   bbox_inches: "tight"
-  pad_inches: 0.05          # Padding around figure
+  pad_inches: 0.05
   
-  # Subplot spacing
-  hspace: 0.35              # Height space between subplots
-  wspace: 0.25              # Width space between subplots
+  hspace: 0.35
+  wspace: 0.25
 
-# ============================================================================
-# LEGEND CONFIGURATION
-# ============================================================================
 legend:
   enabled: true
-  position: "upper left"    # Default position (can override per plot)
-  framealpha: 0.95          # Legend background transparency
+  position: "upper left"
+  framealpha: 0.95
   frameon: true
   shadow: false
   fontsize: 9
   handlelength: 2.0
   handletextpad: 0.6
   labelspacing: 0.5
-  ncol: 1                   # Number of columns
+  ncol: 1
 
-# ============================================================================
-# AXIS CONFIGURATION
-# ============================================================================
 axes:
-  # Spine visibility
   spines:
     left: true
     bottom: true
     right: false
     top: false
   
-  # Tick configuration
   tick_direction: "in"
   tick_length: 4.0
   tick_width: 0.8
   
-  # Axis limits
-  y_min: 0                  # Y-axis starts at 0 by default
-  x_padding: 0.02           # Padding on x-axis
+  y_min: 0
+  x_padding: 0.02
 
-# ============================================================================
-# SPECIAL PLOT TYPES
-# ============================================================================
 plot_types:
-  # Dual-axis plots (Cohen's d + R(α))
   dual_axis:
-    left_color: "#1f77b4"    # Blue for Cohen's d
-    right_color: "#d62728"   # Red for R(α)
+    left_color: "#1f77b4"
+    right_color: "#d62728"
     line_width: 1.2
     marker_size: 6
     fill_alpha: 0.15
   
-  # Heatmaps
   heatmap:
-    cmap: "YlOrRd"           # Yellow-Orange-Red colormap
+    cmap: "YlOrRd"
     aspect: "auto"
     annotation_fontsize: 7
     cbar_label_size: 8
   
-  # Box plots
   box:
     width: 0.6
     patch_alpha: 0.7
     line_width: 1.2
   
-  # Line plots (time series, trends, multi-environment)
   line_plots:
     line_width: 1.2
     marker_size: 6
     marker_style: "o"
-    fill_alpha: 0.15              # For confidence bands
+    fill_alpha: 0.15
     spines:
-      left: true                  # Keep left spine
-      bottom: true                # Keep bottom spine
-      right: false                # Remove right spine
-      top: false                  # Remove top spine
-    spine_width: 0.5              # Thin spine lines
+      left: true
+      bottom: true
+      right: false
+      top: false
+    spine_width: 0.5
     grid:
       enabled: true
-      axis: "y"                   # Grid on y-axis only
+      axis: "y"
       linestyle: ":"
       alpha: 0.2
       linewidth: 0.5
-    no_title: true                # Don't show plot titles
+    no_title: true
   
-  # Bar plots (orthogonal, logit distance, nullspace)
   bar_plots:
     spines:
       left: true
@@ -210,7 +165,7 @@ plot_types:
     spine_width: 0.5
     grid:
       enabled: true
-      axis: "y"                   # Grid on y-axis only
+      axis: "y"
       linestyle: ":"
       alpha: 0.2
       linewidth: 0.5
@@ -223,7 +178,6 @@ plot_types:
       framealpha: 0.95
       loc: "upper left"
   
-  # Heatmaps (multi-environment)
   heatmaps:
     cmap: "RdYlGn_r"
     aspect: "auto"
@@ -237,7 +191,6 @@ plot_types:
       top: false
     no_title: true
   
-  # Scatter plots (vector equivalence)
   scatter_plots:
     spines:
       left: true
@@ -258,25 +211,18 @@ plot_types:
       framealpha: 0.95
       loc: "upper left"
       alpha: 0.3
-    no_value_labels: true         # Line plots typically don't need inline labels
+    no_value_labels: true
 
-# ============================================================================
-# TEXT ANNOTATIONS
-# ============================================================================
 annotations:
   enabled: true
-  fontsize: 9              # Inline value labels
+  fontsize: 9
   color: "black"
   weight: "normal"
-  ha: "center"             # Horizontal alignment
-  va: "center"             # Vertical alignment
+  ha: "center"
+  va: "center"
   
-  # Number formatting
-  precision: 2             # Decimal places
+  precision: 2
 
-# ============================================================================
-# OUTPUT FORMATS
-# ============================================================================
 output:
   formats: ["pdf", "png"]
   pdf:
@@ -288,23 +234,16 @@ output:
     bbox_inches: "tight"
     pad_inches: 0.05
   
-  # File naming
   naming:
     sep: "_"
     include_timestamp: false
 
-# ============================================================================
-# EXPORT PATHS
-# ============================================================================
 paths:
   figures_dir: "figures"
   results_dir: "results"
   analysis_dir: "results/analysis"
   config_dir: "config"
 
-# ============================================================================
-# MATPLOTLIB RCPARAMS (APPLIED GLOBALLY)
-# ============================================================================
 matplotlib_rcparams:
   "font.family": "sans-serif"
   "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"]
